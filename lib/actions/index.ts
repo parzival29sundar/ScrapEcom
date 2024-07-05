@@ -70,7 +70,15 @@ export async function getAllProducts() {
 
     const products = await Product.find();
 
-    return products;
+    const safeProducts = products.map(product => ({
+      ...product._doc,  // Use _doc to get the plain JavaScript object representation of the Mongoose document
+      price: product.price !==undefined ? product.price:0,  // Provide a default value if price is missing
+    }));
+
+    return safeProducts;
+
+
+
   } catch (error) {
     console.log(error);
   }
